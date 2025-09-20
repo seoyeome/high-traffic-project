@@ -6,9 +6,12 @@ spring:
     url: jdbc:postgresql://localhost:5432/app
     username: app
     password: app
+    hikari:
+      initialization-fail-timeout: 0
   jpa:
     hibernate:
       ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       hibernate:
         jdbc:
