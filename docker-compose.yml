@@ -44,5 +44,24 @@ services:
   #   ports:
   #     - "9092:9092"
 
+  prometheus:
+    image: prom/prometheus:v2.53.0
+    container_name: ht_prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command: ["--config.file=/etc/prometheus/prometheus.yml"]
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: ht_grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+
 volumes:
   pgdata:
+  grafana-data:
