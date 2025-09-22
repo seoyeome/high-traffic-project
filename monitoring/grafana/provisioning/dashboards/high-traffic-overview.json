@@ -105,7 +105,7 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "avg(hikaricp_connections_active{pool=\"HikariPool-1\"}) / max(hikaricp_connections_max{pool=\"HikariPool-1\"})",
+          "expr": "rate(hikaricp_connections_usage_seconds_sum{pool=\"HikariPool-1\"}[1m]) / max(hikaricp_connections_max{pool=\"HikariPool-1\"})",
           "legendFormat": "active/max",
           "refId": "A"
         }
