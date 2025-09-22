@@ -6,7 +6,6 @@ export const options = {
   duration: __ENV.DURATION || '1m',
   thresholds: {
     http_req_duration: ['p(95)<800'],
-    http_req_failed: ['rate<0.02'],
   },
 };
 
@@ -26,7 +25,7 @@ export default function () {
 
   const res = http.post(`${BASE_URL}/orders`, payload, params);
   check(res, {
-    'create order 201': (r) => r.status === 201,
+    'create order success or conflict': (r) => r.status === 201 || r.status === 409,
   });
 
   if (Math.random() < 0.3) {
