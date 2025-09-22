@@ -101,11 +101,11 @@
       "title": "Hikari pool usage (%)",
       "id": 6,
       "gridPos": { "h": 8, "w": 8, "x": 16, "y": 8 },
-      "fieldConfig": { "defaults": { "unit": "percentunit" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "unit": "percent" }, "overrides": [] },
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "rate(hikaricp_connections_usage_seconds_sum{pool=\"HikariPool-1\"}[1m]) / max(hikaricp_connections_max{pool=\"HikariPool-1\"})",
+          "expr": "100 * (sum by (pool)(rate(hikaricp_connections_usage_seconds_sum{application=\"high-traffic-project\"}[1m])) / max by (pool) (hikaricp_connections_max{application=\"high-traffic-project\"}))",
           "legendFormat": "active/max",
           "refId": "A"
         }
