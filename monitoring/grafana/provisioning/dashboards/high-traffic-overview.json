@@ -105,9 +105,15 @@
       "targets": [
         {
           "datasource": { "type": "prometheus", "uid": "prometheus" },
-          "expr": "100 * (sum by (pool)(rate(hikaricp_connections_usage_seconds_sum{application=\"high-traffic-project\"}[1m])) / max by (pool) (hikaricp_connections_max{application=\"high-traffic-project\"}))",
-          "legendFormat": "active/max",
+          "expr": "100 * (sum by (pool)(rate(hikaricp_connections_usage_seconds_sum{application=\"high-traffic-project\"}[5m])) / max by (pool) (hikaricp_connections_max{application=\"high-traffic-project\"}))",
+          "legendFormat": "usage% (rate5m)",
           "refId": "A"
+        },
+        {
+          "datasource": { "type": "prometheus", "uid": "prometheus" },
+          "expr": "100 * (avg_over_time(hikaricp_connections_active{application=\"high-traffic-project\"}[1m]) / max by (pool) (hikaricp_connections_max{application=\"high-traffic-project\"}))",
+          "legendFormat": "active% (avg1m)",
+          "refId": "B"
         }
       ]
     },
@@ -156,6 +162,6 @@
   "timezone": "browser",
   "title": "High Traffic Overview",
   "uid": "high-traffic-overview",
-  "version": 1,
+  "version": 3,
   "weekStart": ""
 }
