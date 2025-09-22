@@ -5,6 +5,8 @@ import org.example.hightrafficproject.entity.Order;
 import org.example.hightrafficproject.entity.Product;
 import org.example.hightrafficproject.repository.OrderRepository;
 import org.example.hightrafficproject.repository.ProductRepository;
+import org.example.hightrafficproject.common.error.OutOfStockException;
+import org.example.hightrafficproject.common.error.ProductNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,13 +22,13 @@ public class OrderService {
     @Transactional
     public Order createOrder(String userId, Long productId, int quantity) {
         Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productId));
+                .orElseThrow(() -> new ProductNotFoundException(productId));
 
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be >= 1");
         }
         if (product.getStock() < quantity) {
-            throw new IllegalStateException("Insufficient stock");
+            throw new OutOfStockException(productId, quantity, product.getStock());
         }
 
         product.setStock(product.getStock() - quantity);
